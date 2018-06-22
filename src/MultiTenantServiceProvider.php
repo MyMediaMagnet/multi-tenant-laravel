@@ -1,10 +1,10 @@
 <?php
 
-namespace Spatie\Skeleton;
+namespace MultiTenantLaravel;
 
 use Illuminate\Support\ServiceProvider;
 
-class SkeletonServiceProvider extends ServiceProvider
+class MultiTenantServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application services.
@@ -13,7 +13,7 @@ class SkeletonServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__.'/../config/skeleton.php' => config_path('skeleton.php'),
+                __DIR__.'/../config/multi-tenant.php' => config_path('multi-tenant.php'),
             ], 'config');
 
             /*
@@ -31,6 +31,6 @@ class SkeletonServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'skeleton');
+        $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'multi-tenant');
     }
 }
