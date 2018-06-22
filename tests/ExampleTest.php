@@ -17,4 +17,10 @@ class ExampleTest extends TestCase
     {
         $this->assertFalse(false);
     }
+    
+    /** @test */
+    public function status_check()
+    {
+        $this->assertEquals('status_check', 'status_check');
+    }
 }
