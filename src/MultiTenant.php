@@ -11,4 +11,9 @@ class MultiTenant
     {
         // constructor body
     }
+
+    public static function get()
+    {
+        return 'Been gotten';
+    }
 }

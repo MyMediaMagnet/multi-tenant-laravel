@@ -42,10 +42,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "MultiTenantLaravel\\MultiTenantServiceProvider"
+                "MultiTenantLaravel\\Providers\\MultiTenantServiceProvider"
             ],
             "aliases": {
-                "Skeleton": "MultiTenantLaravel\\MultiTenantFacade"
+                "MultiTenant": "MultiTenantLaravel\\Facades\\MultiTenantFacade"
             }
         }
     }

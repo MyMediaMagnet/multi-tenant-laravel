@@ -1,26 +1,14 @@
 <?php
 
-namespace Spatie\Skeleton\Tests;
+namespace MultiTenantLaravel\Tests;
 
 use PHPUnit\Framework\TestCase;
+use MultiTenantLaravel\MultiTenant;
 
 class ExampleTest extends TestCase
 {
-    /** @test */
-    public function true_is_true()
+    public function testGettingStarted()
     {
-        $this->assertTrue(true);
-    }
-    
-    /** @test */
-    public function false_is_false()
-    {
-        $this->assertFalse(false);
-    }
-    
-    /** @test */
-    public function status_check()
-    {
-        $this->assertEquals('status_check', 'status_check');
+        $this->assertEquals(MultiTenant::get(), 'Been gotten');
     }
 }
