@@ -18,16 +18,17 @@
     },
     "require-dev": {
         "larapack/dd": "^1.0",
-        "phpunit/phpunit": "^7.0"
+        "phpunit/phpunit": "^7.0",
+        "satooshi/php-coveralls": "^2.0"
     },
     "autoload": {
         "psr-4": {
-            "Spatie\\Skeleton\\": "src"
+            "MultiTenantLaravel\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Spatie\\Skeleton\\Tests\\": "tests"
+            "MultiTenantLaravel\\Tests\\": "tests"
         }
     },
     "scripts": {
@@ -41,10 +42,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Spatie\\Skeleton\\SkeletonServiceProvider"
+                "MultiTenantLaravel\\MultiTenantServiceProvider"
             ],
             "aliases": {
-                "Skeleton": "Spatie\\Skeleton\\SkeletonFacade"
+                "Skeleton": "MultiTenantLaravel\\MultiTenantFacade"
             }
         }
     }
