@@ -11,19 +11,20 @@ class MultiTenantServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        if ($this->app->runningInConsole()) {
-            $this->publishes([
-                __DIR__.'/../config/multi-tenant.php' => config_path('multi-tenant.php'),
-            ], 'config');
+        // Publish the configurable config file for the user
+        $this->publishes([__DIR__.'/config/multi-tenant.php' => config_path('multi-tenant.php')], 'config');
 
-            /*
-            $this->loadViewsFrom(__DIR__.'/../resources/views', 'skeleton');
+        // Make views publishable to the vendor folder in a project
+        $this->publishes([__DIR__.'/resources/views' => resource_path('views/vendor/multi-tenant')]);
 
-            $this->publishes([
-                __DIR__.'/../resources/views' => base_path('resources/views/vendor/skeleton'),
-            ], 'views');
-            */
-        }
+        // Load any routes
+        $this->loadRoutesFrom(__DIR__.'/routes/routes.php');
+
+        // Load any migrations
+        $this->loadMigrationsFrom(__DIR__.'/database/migrations');
+
+        // Load any views
+        $this->loadViewsFrom(__DIR__.'/resources/views', 'multi-tenant');
     }
 
     /**
@@ -31,6 +32,6 @@ class MultiTenantServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        // $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'multi-tenant');
+        $this->mergeConfigFrom(__DIR__.'/config/config.php', 'multi-tenant-config');
     }
 }

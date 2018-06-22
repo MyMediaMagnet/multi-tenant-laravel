@@ -1,6 +1,6 @@
 <?php
 
-namespace MultiTenantLaravel;
+namespace MultiTenantLaravel\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
