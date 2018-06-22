@@ -2,7 +2,7 @@
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/:package_name.svg?style=flat-square)](https://packagist.org/packages/spatie/:package_name)
 [![Build Status](https://travis-ci.org/MyMediaMagnet/multi-tenant-laravel.svg?branch=master)](https://travis-ci.org/MyMediaMagnet/multi-tenant-laravel)
-[![Quality Score](https://img.shields.io/scrutinizer/g/MyMediaMagnet/multi-tenant-laravel/.svg?style=flat-square)](https://scrutinizer-ci.com/g/MyMediaMagnet/multi-tenant-laravel/)
+[![Quality Score](https://img.shields.io/scrutinizer/g/MyMediaMagnet/multi-tenant-laravel.svg?style=flat-square)](https://scrutinizer-ci.com/g/MyMediaMagnet/multi-tenant-laravel)
 [![Total Downloads](https://img.shields.io/packagist/dt/spatie/:package_name.svg?style=flat-square)](https://packagist.org/packages/spatie/:package_name)
 
 **Note:** Replace ```:author_name``` ```:author_username``` ```:author_email``` ```:package_name``` ```:package_description``` with their correct values in [README.md](README.md), [CHANGELOG.md](CHANGELOG.md), [CONTRIBUTING.md](CONTRIBUTING.md), [LICENSE.md](LICENSE.md) and [composer.json](composer.json) files, then delete this line.
