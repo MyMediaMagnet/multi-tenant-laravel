@@ -3,6 +3,7 @@
 namespace MultiTenantLaravel;
 
 use Illuminate\Support\ServiceProvider;
+use MultiTenantLaravel\App\Commands\CreateTenant;
 
 class MultiTenantServiceProvider extends ServiceProvider
 {
@@ -12,7 +13,7 @@ class MultiTenantServiceProvider extends ServiceProvider
     public function boot()
     {
         // Publish the configurable config file for the user
-        $this->publishes([__DIR__.'/config/multi-tenant.php' => config_path('multi-tenant.php')], 'config');
+        $this->publishes([__DIR__.'/config/multi-tenant.php' => config_path('multi-tenant.php')], 'multi-tenant');
 
         // Make views publishable to the vendor folder in a project
         $this->publishes([__DIR__.'/resources/views' => resource_path('views/vendor/multi-tenant')]);
@@ -25,6 +26,16 @@ class MultiTenantServiceProvider extends ServiceProvider
 
         // Load any views
         $this->loadViewsFrom(__DIR__.'/resources/views', 'multi-tenant');
+
+        // Setup a middleware for the multi tenacy
+        app('router')->aliasMiddleware('multi-tenant', \MultiTenantLaravel\App\Http\Middleware\MultiTenantMiddleware::class);
+
+        // Register any commands we want available to the user
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                CreateTenant::class,
+            ]);
+        }
     }
 
     /**
