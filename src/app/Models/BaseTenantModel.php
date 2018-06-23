@@ -4,15 +4,41 @@ namespace MultiTenantLaravel\App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class BaseTenantModel extends Model
+abstract class BaseTenantModel extends Model
 {
-    public function __construct()
+    /**
+     * Construct the model with the provided config settings
+     * or use our fallbacks if none are provided
+     */
+    public function __construct(array $attributes = [])
     {
         $this->setTable(config('multi-tenant.table_name'));
+
+        $this->setFillable();
+
+        // parent construct must go below property customizations
+        parent::__construct($attributes);
     }
 
-    public function getTableName()
+    /**
+     *  Merge the fillable fields with any provided in the extending class
+     */
+    public function setFillable()
     {
-        return $this->getTable();
+        $fillable = [
+            'owner_id',
+            'slug',
+            'name'
+        ];
+
+        $this->fillable(array_merge($this->fillable, $fillable));
+    }
+
+    /**
+     *  Merge the fillable fields with any provided in the extending class
+     */
+    public function owner()
+    {
+        return $this->belongsTo(config('multi-tenant.user_class'), 'owner_id');
     }
 }
