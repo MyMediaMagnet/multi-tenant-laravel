@@ -3,6 +3,7 @@
 namespace MultiTenantLaravel\App\Commands;
 
 use Illuminate\Console\Command;
+use Faker\Generator as Faker;
 
 class CreateTenant extends Command
 {
@@ -11,7 +12,7 @@ class CreateTenant extends Command
      *
      * @var string
      */
-    protected $signature = 'tenant:create {--fake}';
+    protected $signature = 'tenant:create-tenant {--fake}';
 
     /**
      * The console command description.
@@ -20,13 +21,17 @@ class CreateTenant extends Command
      */
     protected $description = 'Create a new tenant';
 
+    protected $faker;
+
     /**
      * Create a new command instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Faker $faker)
     {
+        $this->faker = $faker;
+
         parent::__construct();
     }
 
@@ -53,10 +58,29 @@ class CreateTenant extends Command
 
     private function createFakeTenant()
     {
-        // Start faker and create a fake tenant
-        $faker = new Faker\Generator();
+        $name = $this->faker->name;
 
-        dd($faker);
+        $create_new = $this->anticipate('Would you like to create a new user, or use an existing?', ['New', 'Existing'], 'New');
+
+        if ($create_new === "New") {
+            $user = factory(config('multi-tenant.user_class'))->create(['password' => bcrypt('tester')]);
+        } else {
+            $headers = ['Name', 'ID'];
+            $tenants = config('multi-tenant.user_class')::all('name', 'id');
+            $this->table($headers, $tenants->toArray());
+
+            $user_id = (int) $this->ask('Please enter the id of the desired user.');
+
+            $user = config('multi-tenant.user_class')::findOrFail($user_id);
+        }
+
+        $tenant = config('multi-tenant.tenant_class')::create([
+            'name' => $name,
+            'owner_id' => $user->id,
+            'slug' => str_slug($name)
+        ]);
+
+        $this->comment('The user ' . $user->email . ' is now the owner of ' . $tenant->name . ' with the password ', 'tester');
     }
 
     private function createNewTenant()

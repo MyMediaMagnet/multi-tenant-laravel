@@ -1,5 +1,5 @@
 {
-    "name": "mymediamagnet/multi-tentant-laravel",
+    "name": "mymediamagnet/multi-tenant-laravel",
     "description": "Laravel Multi Tenant Package",
     "keywords": [
         "laravel",
@@ -44,10 +44,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "MultiTenantLaravel\\Providers\\MultiTenantServiceProvider"
+                "MultiTenantLaravel\\MultiTenantServiceProvider"
             ],
             "aliases": {
-                "MultiTenant": "MultiTenantLaravel\\Facades\\MultiTenantFacade"
+                "MultiTenant": "MultiTenantLaravel\\App\\Facades\\MultiTenantFacade"
             }
         }
     }

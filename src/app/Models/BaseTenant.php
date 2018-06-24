@@ -4,7 +4,7 @@ namespace MultiTenantLaravel\App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-abstract class BaseTenantModel extends Model
+abstract class BaseTenant extends Model
 {
     /**
      * Construct the model with the provided config settings
@@ -40,5 +40,30 @@ abstract class BaseTenantModel extends Model
     public function owner()
     {
         return $this->belongsTo(config('multi-tenant.user_class'), 'owner_id');
+    }
+
+    /**
+     *  The features relationship
+     */
+    public function features()
+    {
+        return $this->belongsToMany(config('multi-tenant.feature_class'));
+    }
+
+
+    /**
+     *  The features relationship
+     */
+    public function assignFeature(BaseFeature $feature)
+    {
+        return $this->features()->syncWithoutDetaching($feature);
+    }
+
+    /**
+     *  The features relationship
+     */
+    public function hasFeature(BaseFeature $feature)
+    {
+        return $this->features()->where('feature_id', $feature->id)->exists();
     }
 }

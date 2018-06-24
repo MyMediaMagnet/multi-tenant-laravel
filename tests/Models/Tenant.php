@@ -2,9 +2,9 @@
 
 namespace MultiTenantLaravel\Tests\Models;
 
-use MultiTenantLaravel\App\Models\BaseTenantModel;
+use MultiTenantLaravel\App\Models\BaseTenant;
 
-class Tenant extends BaseTenantModel
+class Tenant extends BaseTenant
 {
 
 }
