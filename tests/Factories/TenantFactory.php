@@ -16,7 +16,7 @@ use MultiTenantLaravel\Tests\Models\Tenant;
 */
 
 $factory->define(Tenant::class, function (Faker $faker) {
-    $name = $faker->company;
+    $name = $faker->word;
     $user = factory(User::class)->create();
 
     return [
