@@ -4,6 +4,7 @@ namespace MultiTenantLaravel\App\Models;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Collection;
 
 abstract class BaseUser extends Authenticatable
 {
@@ -53,8 +54,24 @@ abstract class BaseUser extends Authenticatable
     /**
      * Check if a user has a given role
      */
-    public function hasRole(BaseRole $role)
+    public function hasRole($role)
     {
+        if (is_string($role)) {
+            return $this->roles->contains('name', $role);
+        }
+
+        if ($role instanceof Collection) {
+            $role = $role->toArray();
+        }
+
+        if (is_array($role)) {
+            foreach($role as $r) {
+                if ($this->roles->contains('name', $r['name'])) {
+                    return true;
+                }
+            }
+        }
+
         return $this->roles()->where('multi_tenant_role_id', $role->id)->exists();
     }
 

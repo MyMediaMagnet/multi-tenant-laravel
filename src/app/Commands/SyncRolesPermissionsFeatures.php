@@ -65,7 +65,10 @@ class SyncRolesPermissionsFeatures extends Command
      */
     private function syncPermissions()
     {
+        // Loop through all the features, then loop through the permission types
         foreach (config('multi-tenant.feature_class')::get() as $feature) {
+            // Loop through the permission types and create a
+            // permission for each permission type on this feature
             foreach (config('multi-tenant.permission_types') as $permission_type) {
                 config('multi-tenant.permission_class')::firstOrCreate([
                     'name' => $feature->name . '_' . $permission_type,

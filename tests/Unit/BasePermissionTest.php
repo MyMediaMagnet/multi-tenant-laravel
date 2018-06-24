@@ -7,6 +7,7 @@ use MultiTenantLaravel\App\Models\BaseTenantModel;
 use MultiTenantLaravel\Tests\TestCase;
 use MultiTenantLaravel\Tests\Models\Permission;
 use MultiTenantLaravel\Tests\Models\Role;
+use MultiTenantLaravel\Tests\Models\User;
 
 class BasePermissionTest extends TestCase
 {
@@ -24,5 +25,31 @@ class BasePermissionTest extends TestCase
 
         $this->assertTrue($permission->hasRole($role));
         $this->assertTrue($role->hasPermission($permission));
+    }
+
+    public function testPermissionsOnGate()
+    {
+        $permission = factory(Permission::class)->create();
+        $role = factory(Role::class)->create();
+        $user = factory(User::class)->create();
+
+        $permission->giveToRole($role);
+
+        $user->assignRole($role);
+
+        $this->assertTrue($user->can($permission->name));
+    }
+
+    public function testPermissionsOnGateFromSync()
+    {
+        $permission = Permission::first();
+        $role = factory(Role::class)->create();
+        $user = factory(User::class)->create();
+
+        $permission->giveToRole($role);
+
+        $user->assignRole($role);
+
+        $this->assertTrue($user->can($permission->name));
     }
 }

@@ -15,8 +15,9 @@ use MultiTenantLaravel\Tests\Models\Permission;
 */
 
 $factory->define(Permission::class, function (Faker $faker) {
+    $name = $faker->name;
     return [
-        'name' => $faker->name,
-        'label' => $faker->unique()->safeEmail,
+        'name' => str_slug($name),
+        'label' => $name,
     ];
 });

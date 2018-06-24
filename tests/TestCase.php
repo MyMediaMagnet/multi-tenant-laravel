@@ -79,7 +79,7 @@ abstract class TestCase extends OrchestraTestCase
             'delete'
         ]);
 
-        // $app['config']->set('database.default', 'multi-tenant');
+        $app['config']->set('database.default', 'multi-tenant');
 
         $app['config']->set('database.connections.multi-tenant', [
             'driver'   => 'sqlite',
