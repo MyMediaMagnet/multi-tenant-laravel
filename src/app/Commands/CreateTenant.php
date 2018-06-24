@@ -74,14 +74,13 @@ class CreateTenant extends Command
             $user = config('multi-tenant.user_class')::findOrFail($user_id);
         }
 
-
         $tenant = config('multi-tenant.tenant_class')::create([
             'name' => $name,
             'owner_id' => $user->id,
             'slug' => str_slug($name)
         ]);
 
-        $this->comment('The user ' . $user->email . ' is now the owner of ' . $tenant->name);
+        $this->comment('The user ' . $user->email . ' is now the owner of ' . $tenant->name . ' with the password ', 'tester');
     }
 
     private function createNewTenant()
