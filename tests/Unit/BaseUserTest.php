@@ -5,6 +5,7 @@ namespace MultiTenantLaravel\Tests\Unit;
 use MultiTenantLaravel\MultiTenant;
 use MultiTenantLaravel\Tests\TestCase;
 use MultiTenantLaravel\Tests\Models\User;
+use MultiTenantLaravel\Tests\Models\Role;
 use MultiTenantLaravel\Tests\Models\Tenant;
 
 class BaseUserTest extends TestCase
@@ -46,5 +47,15 @@ class BaseUserTest extends TestCase
 
         $this->assertEquals($tenants->first()->name, $user->owns->first()->name);
         $this->assertEquals($tenants->last()->name, $user->owns->last()->name);
+    }
+
+    public function testUserCanHaveARole()
+    {
+        $user = factory(User::class)->create();
+        $role = factory(Role::class)->create();
+
+        $user->assignRole($role);
+
+        $this->assertTrue($user->hasRole($role));
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use Faker\Generator as Faker;
+use MultiTenantLaravel\Tests\Models\Role;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,7 +14,7 @@ use Faker\Generator as Faker;
 |
 */
 
-$factory->define(App\FakeTenant::class, function (Faker $faker) {
+$factory->define(Role::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
         'label' => $faker->unique()->safeEmail,

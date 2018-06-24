@@ -1,7 +1,8 @@
 <?php
 
 use Faker\Generator as Faker;
-use MultiTenantLaravel\Tests\Models\Permission;
+
+use MultiTenantLaravel\Tests\Models\Feature;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,9 +15,11 @@ use MultiTenantLaravel\Tests\Models\Permission;
 |
 */
 
-$factory->define(Permission::class, function (Faker $faker) {
+$factory->define(Feature::class, function (Faker $faker) {
+    $name = $faker->name;
     return [
-        'name' => $faker->name,
-        'label' => $faker->unique()->safeEmail,
+        'name' => str_slug($name),
+        'model' => 'App\\' . $name,
+        'label' => $name,
     ];
 });

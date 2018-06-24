@@ -4,6 +4,8 @@ namespace MultiTenantLaravel;
 
 use Illuminate\Support\ServiceProvider;
 use MultiTenantLaravel\App\Commands\CreateTenant;
+use MultiTenantLaravel\App\Commands\CreateUser;
+use MultiTenantLaravel\App\Commands\SyncRolesPermissionsFeatures;
 
 class MultiTenantServiceProvider extends ServiceProvider
 {
@@ -30,10 +32,17 @@ class MultiTenantServiceProvider extends ServiceProvider
         // Setup a middleware for the multi tenacy
         app('router')->aliasMiddleware('multi-tenant', \MultiTenantLaravel\App\Http\Middleware\MultiTenantMiddleware::class);
 
+        // Bind any Facades to the app
+        $this->app->bind('multi-tenant', function(){
+            return new \MultiTenantLaravel\MultiTenant;
+        });
+
         // Register any commands we want available to the user
         if ($this->app->runningInConsole()) {
             $this->commands([
                 CreateTenant::class,
+                CreateUser::class,
+                SyncRolesPermissionsFeatures::class,
             ]);
         }
     }
