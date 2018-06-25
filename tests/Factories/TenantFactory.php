@@ -16,7 +16,11 @@ use MultiTenantLaravel\Tests\Models\Tenant;
 */
 
 $factory->define(Tenant::class, function (Faker $faker) {
-    $name = $faker->word;
+
+    //Generate a random number to help avoid duplicate slugs
+    $unique = rand(100,999);
+
+    $name = $faker->word.'-'.$unique;
     $user = factory(User::class)->create();
 
     return [

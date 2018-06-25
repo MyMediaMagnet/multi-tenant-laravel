@@ -58,4 +58,5 @@ class BaseUserTest extends TestCase
 
         $this->assertTrue($user->hasRole($role));
     }
+    //Added some comments!
 }
