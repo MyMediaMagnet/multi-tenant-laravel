@@ -80,7 +80,7 @@ class CreateTenant extends Command
             'slug' => str_slug($name)
         ]);
 
-        $this->comment('The user ' . $user->email . ' is now the owner of ' . $tenant->name . ' with the password ', 'tester');
+        $this->comment('The user ' . $user->email . ' is now the owner of ' . $tenant->name . ' with the password `tester`');
     }
 
     private function createNewTenant()

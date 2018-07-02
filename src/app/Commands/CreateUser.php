@@ -71,16 +71,25 @@ class CreateUser extends Command
         if ($add_to_tenant == 'Yes') {
             $headers = ['Name', 'ID'];
             $tenants = config('multi-tenant.tenant_class')::all('name', 'id');
+
             if($tenants->count() <= 0) {
-                $this->comment('No tenants available, bye');
+                $this->comment($user->email . ' with the password `tester` was created without any tenants');
             } else {
                 $this->table($headers, $tenants->toArray());
+
+                $tenant_id = (int) $this->ask('Please enter the id of the desired tenant.');
+
+                $tenant = config('multi-tenant.tenant_class')::findOrFail($tenant_id);
+
+                $tenant->update(['owner_id' => $user->id]);
+
+                $this->comment('The user ' . $user->email . ' is now the owner of ' . $tenant->name . ' with the password `tester`');
             }
         }
     }
 
     private function createNewUser()
     {
-        // Ask for some user input and create a new tenant
+        $this->comment('creating new user');
     }
 }
