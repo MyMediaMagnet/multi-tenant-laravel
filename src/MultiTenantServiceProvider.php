@@ -47,7 +47,7 @@ class MultiTenantServiceProvider extends ServiceProvider
         $this->registerPermissions();
 
         // Register any commands we want available to the user
-        if ($this->app->runningInConsole()) {
+        if ($this->app->runningInConsole() || config('app.env') === 'testing') {
             $this->commands([
                 CreateTenant::class,
                 CreateUser::class,

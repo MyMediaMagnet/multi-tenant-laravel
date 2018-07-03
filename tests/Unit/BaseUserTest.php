@@ -10,11 +10,6 @@ use MultiTenantLaravel\Tests\Models\Tenant;
 
 class BaseUserTest extends TestCase
 {
-    public function testGettingStarted()
-    {
-        $this->assertEquals(MultiTenant::get(), 'Been gotten');
-    }
-
     public function testBaseUserTableName()
     {
         $user_model = new User();
@@ -58,5 +53,4 @@ class BaseUserTest extends TestCase
 
         $this->assertTrue($user->hasRole($role));
     }
-    //Added some comments!
 }
