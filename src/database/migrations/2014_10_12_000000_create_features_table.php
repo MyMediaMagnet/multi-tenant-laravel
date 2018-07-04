@@ -15,12 +15,14 @@ class CreateFeaturesTable extends Migration
     {
         Schema::create('features', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->index();
+            $table->string('name');
             $table->string('model');
             $table->string('label')->nullable();
             $table->text('description')->nullable();
             $table->boolean('auto_add')->default(false);
             $table->timestamps();
+
+            $table->index('name', 'features_name_index');
         });
     }
 

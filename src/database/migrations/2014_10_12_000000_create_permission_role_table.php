@@ -16,9 +16,12 @@ class CreatePermissionRoleTable extends Migration
         if (config('multi-tenant.use_roles_and_permissions')) {
             Schema::create('multi_tenant_permission_multi_tenant_role', function (Blueprint $table) {
                 $table->increments('id');
-                $table->integer('multi_tenant_role_id')->index()->unsigned();
-                $table->integer('multi_tenant_permission_id')->index()->unsigned();
+                $table->integer('multi_tenant_role_id')->unsigned();
+                $table->integer('multi_tenant_permission_id')->unsigned();
                 $table->timestamps();
+
+                $table->index('multi_tenant_permission_id', 'permission_role_permission_id_index');
+                $table->index('multi_tenant_role_id', 'permission_role_multi_tenant_role_id_index');
             });
         }
     }
