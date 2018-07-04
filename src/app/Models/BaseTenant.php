@@ -50,6 +50,14 @@ abstract class BaseTenant extends Model
         return $this->belongsToMany(config('multi-tenant.feature_class'));
     }
 
+    /**
+     *  The users relationship
+     */
+    public function users()
+    {
+        return $this->belongsToMany(config('multi-tenant.user_class'));
+    }
+
 
     /**
      *  The features relationship

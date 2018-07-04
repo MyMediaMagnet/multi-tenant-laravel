@@ -90,4 +90,12 @@ abstract class BaseUser extends Authenticatable
     {
         return config('multi-tenant.tenant_class')::findOrFail(session()->get('tenant.id'));
     }
+
+    /**
+     *  The tenants relationship
+     */
+    public function tenants()
+    {
+        return $this->belongsToMany(config('multi-tenant.tenant_class'));
+    }
 }

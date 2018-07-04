@@ -7,6 +7,7 @@ use MultiTenantLaravel\App\Models\BaseTenantModel;
 use MultiTenantLaravel\Tests\TestCase;
 use MultiTenantLaravel\Tests\Models\Tenant;
 use MultiTenantLaravel\Tests\Models\Feature;
+use MultiTenantLaravel\Tests\Models\User;
 
 class BaseTenantTest extends TestCase
 {
@@ -56,5 +57,24 @@ class BaseTenantTest extends TestCase
             $this->assertTrue($tenant->hasFeature($feature));
             $this->assertTrue($feature->hasTenant($tenant));
         }
+    }
+
+    public function testTenantCanHaveMultipleUsers()
+    {
+        $tenant = factory(Tenant::class)->create();
+        $user_ids = factory(User::class, 4)->create()->pluck('id');
+
+        $not_part_of_tenant = factory(User::class)->create();
+
+        $tenant->users()->sync($user_ids);
+
+        foreach ($user_ids as $user_id) {
+            $user = User::find($user_id);
+
+            $this->assertEquals($user->tenants()->first()->id, $tenant->id);
+        }
+
+        $this->assertEquals(4, $tenant->users()->count());
+        $this->assertEquals(null, $not_part_of_tenant->tenants()->first());
     }
 }
