@@ -53,4 +53,23 @@ class BaseUserTest extends TestCase
 
         $this->assertTrue($user->hasRole($role));
     }
+
+    public function testUserCanHaveMultipleTenants()
+    {
+        $user = factory(User::class)->create();
+        $tenant_ids = factory(Tenant::class, 4)->create()->pluck('id');
+
+        $tenant_not_for_user = factory(Tenant::class)->create();
+
+        $user->tenants()->sync($tenant_ids);
+
+        foreach ($tenant_ids as $tenant_id) {
+            $tenant = Tenant::find($tenant_id);
+
+            $this->assertEquals($tenant->users()->first()->id, $user->id);
+        }
+
+        $this->assertEquals(4, $user->tenants()->count());
+        $this->assertEquals(null, $tenant_not_for_user->users()->first());
+    }
 }
