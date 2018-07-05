@@ -16,11 +16,13 @@ class CreatePermissionsTable extends Migration
         if (config('multi-tenant.use_roles_and_permissions')) {
             Schema::create('multi_tenant_permissions', function (Blueprint $table) {
                 $table->increments('id');
-                $table->integer('feature_id')->index()->nullable();
+                $table->integer('feature_id')->nullable();
                 $table->string('name');
                 $table->string('label')->nullable();
                 $table->text('description')->nullable();
                 $table->timestamps();
+
+                $table->index('feature_id', 'permissions_feature_id_index');
             });
         }
     }
