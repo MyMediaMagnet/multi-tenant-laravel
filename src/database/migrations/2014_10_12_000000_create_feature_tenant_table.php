@@ -15,9 +15,12 @@ class CreateFeatureTenantTable extends Migration
     {
         Schema::create('feature_' . str_singular(config('multi-tenant.table_name')), function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('feature_id')->index()->unsigned();
-            $table->integer('tenant_id')->index()->unsigned();
+            $table->integer('feature_id')->unsigned();
+            $table->integer('tenant_id')->unsigned();
             $table->timestamps();
+
+            $table->index('feature_id', 'feature_tenant_feature_id_index');
+            $table->index('tenant_id', 'feature_tenant_tenant_id_index');
         });
     }
 
