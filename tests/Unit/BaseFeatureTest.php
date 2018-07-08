@@ -17,7 +17,7 @@ class BaseFeatureTest extends TestCase
      */
     public function testFeaturesAreCreatedWithSync()
     {
-        $this->assertDatabaseHas('features', [
+        $this->seeInDatabase('features', [
             'name' => 'fake_feature'
         ]);
     }
@@ -34,7 +34,7 @@ class BaseFeatureTest extends TestCase
 
         $feature->giveToTenant($tenant);
 
-        $this->assertDatabaseHas('feature_tenant', [
+        $this->seeInDatabase('feature_tenant', [
             'feature_id' => $feature->id,
             'tenant_id' => $tenant->id
         ]);

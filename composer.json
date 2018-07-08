@@ -18,7 +18,7 @@
     },
     "require-dev": {
         "larapack/dd": "^1.0",
-        "orchestra/testbench": "^3.6",
+        "orchestra/testbench-browser-kit": "^3.6",
         "phpunit/phpunit": "^7.0",
         "mockery/mockery": "^1.1",
         "satooshi/php-coveralls": "^2.0"

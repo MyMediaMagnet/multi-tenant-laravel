@@ -64,7 +64,7 @@ class BaseTenantTest extends TestCase
         foreach ($features as $feature) {
             $tenant->assignFeature($feature);
 
-            $this->assertDatabaseHas('feature_tenant', [
+            $this->seeInDatabase('feature_tenant', [
                 'feature_id' => $feature->id,
                 'tenant_id' => $tenant->id
             ]);
