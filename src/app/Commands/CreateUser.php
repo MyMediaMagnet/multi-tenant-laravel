@@ -56,6 +56,11 @@ class CreateUser extends Command
 
     }
 
+    /**
+     * Setup a fake user using faker
+     *
+     * @return void
+     */
     private function createFakeUser()
     {
         $name = $this->faker->name;
@@ -88,6 +93,11 @@ class CreateUser extends Command
         }
     }
 
+    /**
+     * Create a new user with user supplied input for the users settings
+     *
+     * @return void
+     */
     private function createNewUser()
     {
         $this->comment('creating new user');

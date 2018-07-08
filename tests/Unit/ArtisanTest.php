@@ -11,8 +11,16 @@ use Illuminate\Support\Facades\Artisan;
 
 class ArtisanTest extends TestCase
 {
+    /**
+     * The mocked artisan command
+     */
     public $command;
 
+    /**
+     * Test that a fake user can be created without any tenants
+     *
+     * @return void
+     */
     public function testFakeUserCanBeCreatedWithNoTenants()
     {
         // In order to properly test our commands, we need to mock the ask()
@@ -29,6 +37,11 @@ class ArtisanTest extends TestCase
         $this->assertNotEmpty(User::first());
     }
 
+    /**
+     * Test that a fake user can be created and then assigned to a new fake tenant
+     *
+     * @return void
+     */
     public function testFakeUserCanBeCreatedWithTenant()
     {
         // Create the tenant that we'll attach the user to
@@ -47,6 +60,11 @@ class ArtisanTest extends TestCase
         $this->assertContains('The user ' . User::get()->last()->email . ' is now the owner of ' . $tenant->name . ' with the password `tester`', trim(Artisan::output()));
     }
 
+    /**
+     * Test that a fake tenant can be created along with a fake user
+     *
+     * @return void
+     */
     public function testFakeTenantCanBeCreatedWithNewUser()
     {
         // In order to properly test our commands, we need to mock the ask()
@@ -64,6 +82,11 @@ class ArtisanTest extends TestCase
         $this->assertNotEmpty(Tenant::first());
     }
 
+    /**
+     * Test that a fake tenant can be created owned by an existing user
+     *
+     * @return void
+     */
     public function testFakeTenantCanBeCreatedWithExistingUser()
     {
         $user = factory(User::class)->create();
@@ -83,6 +106,11 @@ class ArtisanTest extends TestCase
         $this->assertNotEmpty(Tenant::first());
     }
 
+    /**
+     * Test Role Permissions and Features properly sync
+     *
+     * @return void
+     */
     public function testSyncRolesPermissionsAndFeatures()
     {
         // In order to properly test our commands, we need to mock the ask()
@@ -121,6 +149,12 @@ class ArtisanTest extends TestCase
         $this->assertEquals(1, config('multi-tenant.feature_class')::where('name', 'posts')->count());
     }
 
+    /**
+     * Mock the profiled artisan command
+     *
+     * @param $file
+     * @return void
+     */
     private function mockCommand($file)
     {
         $faker = \Faker\Factory::create();
@@ -128,6 +162,13 @@ class ArtisanTest extends TestCase
         $this->command = \Mockery::mock($file, [$faker])->makePartial();
     }
 
+    /**
+     * Mock the ask method of the artisan command and provide the given answer
+     *
+     * @param $question
+     * @param $answer
+     * @return void
+     */
     private function asks($question, $answer)
     {
         $this->command->shouldReceive('ask')
@@ -135,6 +176,15 @@ class ArtisanTest extends TestCase
             ->andReturn($answer);
     }
 
+    /**
+     * Mock the anticipate method of the artisan command and provide the given answer
+     *
+     * @param $question
+     * @param $options
+     * @param $default
+     * @param $answer
+     * @return void
+     */
     private function anticipates($question, $options, $default, $answer)
     {
         $this->command->shouldReceive('anticipate')
@@ -142,6 +192,13 @@ class ArtisanTest extends TestCase
             ->andReturn($answer);
     }
 
+    /**
+     * Register the command and run it
+     *
+     * @param $command_name
+     * @param array $options
+     * @return void
+     */
     private function fireCommand($command_name, $options = [])
     {
         app()['Illuminate\Contracts\Console\Kernel']->registerCommand($this->command);

@@ -58,9 +58,12 @@ abstract class BaseTenant extends Model
         return $this->belongsToMany(config('multi-tenant.user_class'));
     }
 
-
     /**
-     *  The features relationship
+     * Assign the given feature to the teannt
+     *
+     * @param BaseFeature $feature
+     *
+     * @return void
      */
     public function assignFeature(BaseFeature $feature)
     {
@@ -68,7 +71,11 @@ abstract class BaseTenant extends Model
     }
 
     /**
-     *  The features relationship
+     * Test that the tenant has access to a given feature
+     *
+     * @param BaseFeature $feature
+     *
+     * @return boolean
      */
     public function hasFeature(BaseFeature $feature)
     {

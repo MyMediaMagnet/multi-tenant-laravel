@@ -42,7 +42,11 @@ abstract class BaseUser extends Authenticatable
     }
 
     /**
-     * Assign a given role to a user
+     * Assign the provided role to the user
+     *
+     * @param BaseRole $role
+     *
+     * @return BaseUser
      */
     public function assignRole(BaseRole $role)
     {
@@ -52,7 +56,13 @@ abstract class BaseUser extends Authenticatable
     }
 
     /**
-     * Check if a user has a given role
+     * Check if a user has the provided role.
+     * Accepected values are string with the name of the role,
+     * a collection of Role models or an array of role names with a "name" key
+     *
+     * @param $role
+     *
+     * @return boolean
      */
     public function hasRole($role)
     {
@@ -85,6 +95,8 @@ abstract class BaseUser extends Authenticatable
 
     /**
      * Return the currently active tenant for this user based on the session
+     *
+     * @return BaseTenant
      */
     public function activeTenant()
     {

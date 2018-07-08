@@ -10,6 +10,11 @@ use MultiTenantLaravel\Tests\Models\Tenant;
 
 class BaseFeatureTest extends TestCase
 {
+    /**
+     * Test that the sync run on setup finds our features
+     *
+     * @return void
+     */
     public function testFeaturesAreCreatedWithSync()
     {
         $this->assertDatabaseHas('features', [
@@ -17,6 +22,11 @@ class BaseFeatureTest extends TestCase
         ]);
     }
 
+    /**
+     * Test that a feature belongs to multiple tenants
+     *
+     * @return void
+     */
     public function testFeatureHasTenants()
     {
         $feature = factory(Feature::class)->create();
