@@ -23,7 +23,7 @@ class BasePermissionTest extends TestCase
 
         $permission->giveToRole($role);
 
-        $this->assertDatabaseHas('multi_tenant_permission_multi_tenant_role', [
+        $this->seeInDatabase('multi_tenant_permission_multi_tenant_role', [
             'multi_tenant_role_id' => $role->id,
             'multi_tenant_permission_id' => $permission->id
         ]);

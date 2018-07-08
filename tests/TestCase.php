@@ -4,7 +4,7 @@ namespace MultiTenantLaravel\Tests;
 
 use MultiTenantLaravel\App\Facades\MultiTenantFacade;
 use MultiTenantLaravel\MultiTenantServiceProvider;
-use Orchestra\Testbench\TestCase as OrchestraTestCase;
+use Orchestra\Testbench\BrowserKit\TestCase as OrchestraTestCase;
 
 abstract class TestCase extends OrchestraTestCase
 {
