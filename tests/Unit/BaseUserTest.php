@@ -10,6 +10,11 @@ use MultiTenantLaravel\Tests\Models\Tenant;
 
 class BaseUserTest extends TestCase
 {
+    /**
+     * Test that the User table name is configurable
+     *
+     * @return void
+     */
     public function testBaseUserTableName()
     {
         $user_model = new User();
@@ -17,6 +22,11 @@ class BaseUserTest extends TestCase
         $this->assertEquals($user_model->getTable(), 'users');
     }
 
+    /**
+     * Test a User can be created
+     *
+     * @return void
+     */
     public function testBaseUserCanBeCreated()
     {
         $user_data = [
@@ -30,6 +40,11 @@ class BaseUserTest extends TestCase
         $this->assertEquals($user_data['name'], $user->name);
     }
 
+    /**
+     * Test a user can be an owner of a tenant
+     *
+     * @return void
+     */
     public function testUserOwnsTenants()
     {
         $user = factory(User::class)->create();
@@ -44,6 +59,11 @@ class BaseUserTest extends TestCase
         $this->assertEquals($tenants->last()->name, $user->owns->last()->name);
     }
 
+    /**
+     * Test Users can be assigned a role
+     *
+     * @return void
+     */
     public function testUserCanHaveARole()
     {
         $user = factory(User::class)->create();
@@ -54,6 +74,11 @@ class BaseUserTest extends TestCase
         $this->assertTrue($user->hasRole($role));
     }
 
+    /**
+     * Test that users can be assigned to multiple tenants
+     *
+     * @return void
+     */
     public function testUserCanHaveMultipleTenants()
     {
         $user = factory(User::class)->create();

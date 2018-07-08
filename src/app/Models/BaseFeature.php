@@ -24,7 +24,11 @@ abstract class BaseFeature extends Model
     }
 
     /**
-     *  The features relationship
+     * Give this feature to the provided tenant
+     *
+     * @param BaseTenant $tenant
+     *
+     * @return void
      */
     public function giveToTenant(BaseTenant $tenant)
     {
@@ -34,7 +38,11 @@ abstract class BaseFeature extends Model
     }
 
     /**
-     *  The features relationship
+     * Confirm if a feature is activated for a given tenant
+     *
+     * @param BaseTenant $tenant
+     *
+     * @return boolean
      */
     public function hasTenant(BaseTenant $tenant)
     {

@@ -11,11 +11,11 @@ use MultiTenantLaravel\Tests\Models\User;
 
 class BaseTenantTest extends TestCase
 {
-    public function testGettingStarted()
-    {
-        $this->assertEquals(MultiTenant::get(), 'Been gotten');
-    }
-
+    /**
+     * Test the base tenant model table name
+     *
+     * @return void
+     */
     public function testBaseTenantModelTableName()
     {
         $tenant_model = new Tenant();
@@ -23,6 +23,11 @@ class BaseTenantTest extends TestCase
         $this->assertEquals($tenant_model->getTable(), 'tenants');
     }
 
+    /**
+     * Test that a Tenant can be created
+     *
+     * @return void
+     */
     public function testTenantCanBeCreated()
     {
         $tenant_data = factory(Tenant::class)->make()->toArray();
@@ -32,6 +37,11 @@ class BaseTenantTest extends TestCase
         $this->assertEquals($tenant_data['name'], $tenant->name);
     }
 
+    /**
+     * Test that a tenant can have a User as an owner
+     *
+     * @return void
+     */
     public function testTenantHasAnOwner()
     {
         $tenant = factory(Tenant::class)->create();
@@ -41,6 +51,11 @@ class BaseTenantTest extends TestCase
         $this->assertEquals($tenant->owner->name, $user->name);
     }
 
+    /**
+     * Test that the tenant can be assigned features
+     *
+     * @return void
+     */
     public function testTenantHasFeatures()
     {
         $tenant = factory(Tenant::class)->create();
@@ -59,6 +74,11 @@ class BaseTenantTest extends TestCase
         }
     }
 
+    /**
+     * Test that a tenant can have multiple users assigned
+     *
+     * @return void
+     */
     public function testTenantCanHaveMultipleUsers()
     {
         $tenant = factory(Tenant::class)->create();

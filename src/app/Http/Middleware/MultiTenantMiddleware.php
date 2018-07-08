@@ -6,6 +6,13 @@ use Closure;
 
 class MultiTenantMiddleware
 {
+    /**
+     * Handle multi tenant middleware
+     *
+     * @param $request
+     * @param Closure $next
+     * @return void
+     */
     public function handle($request, Closure $next)
     {
         // Here we can perform an multi tenant required authentication

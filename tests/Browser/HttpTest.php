@@ -11,11 +11,21 @@ use MultiTenantLaravel\Tests\Models\User;
 
 class HttpTest extends TestCase
 {
+    /**
+     * Test that guests attempting to go to the homepage are redirected to the login page
+     *
+     * @return void
+     */
     public function testHomePageRedirectsGuestToLogin()
     {
         $this->get('/')->assertRedirect('/login');
     }
 
+    /**
+     * Test that authenticated users with only 1 tenant get redirected to the tenants dashboard
+     *
+     * @return void
+     */
     public function testAuthenticatedUserCanViewTenantHomepage()
     {
         $user = factory(User::class)->create();
@@ -24,6 +34,11 @@ class HttpTest extends TestCase
         $this->actingAs($user)->get('/')->assertSeeText('Welcome to ' . $tenant->name);
     }
 
+    /**
+     * Test that an authenticated user with more than 1 tenant gets sent to their user dashboard dashboard
+     *
+     * @return void
+     */
     public function testAuthenticatedUserWithMoreThanOneTenantGetsDashboard()
     {
         $user = factory(User::class)->create();
@@ -35,6 +50,11 @@ class HttpTest extends TestCase
             ->assertSeeText($tenants->last()->name);
     }
 
+    /**
+     * Test that an authenticated user with multiple tenants but one selected in their session remains with that tenant
+     *
+     * @return void
+     */
     public function testAuthenticatedUserWithMultipleTenantsThatHasOneSelectedViewsTenantHomepage()
     {
         $user = factory(User::class)->create();

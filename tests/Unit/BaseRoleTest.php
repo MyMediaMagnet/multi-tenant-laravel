@@ -10,6 +10,11 @@ use MultiTenantLaravel\Tests\Models\Role;
 
 class BaseRoleTest extends TestCase
 {
+    /**
+     * Test that permissions can be assigned to a role
+     *
+     * @return void
+     */
     public function testRoleCanHavePermissions()
     {
         $permissions = factory(Permission::class, 2)->create();

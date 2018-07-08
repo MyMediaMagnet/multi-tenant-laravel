@@ -31,7 +31,11 @@ abstract class BaseRole extends Model
     }
 
     /**
-     *  Assign a given permission to the Role
+     * Assign the given permission to the role
+     *
+     * @param BasePermission $permission
+     *
+     * @return void
      */
     public function assignPermission(BasePermission $permission)
     {
@@ -41,7 +45,11 @@ abstract class BaseRole extends Model
     }
 
     /**
-     *  Check if the role has a given permission
+     * Check if the role has the given permission
+     *
+     * @param BasePermission $permission
+     *
+     * @return boolean
      */
     public function hasPermission(BasePermission $permission)
     {

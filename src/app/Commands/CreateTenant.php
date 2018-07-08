@@ -56,6 +56,11 @@ class CreateTenant extends Command
 
     }
 
+    /**
+     * Setup a fake user using faker
+     *
+     * @return void
+     */
     private function createFakeTenant()
     {
         $name = $this->faker->name;
@@ -83,6 +88,11 @@ class CreateTenant extends Command
         $this->comment('The user ' . $user->email . ' is now the owner of ' . $tenant->name . ' with the password `tester`');
     }
 
+    /**
+     * Setup a new tenant with user supplied settings for the tenant
+     *
+     * @return void
+     */
     private function createNewTenant()
     {
         // Ask for some user input and create a new tenant
