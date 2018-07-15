@@ -6,6 +6,7 @@ use MultiTenantLaravel\MultiTenant;
 use MultiTenantLaravel\App\Models\BaseTenantModel;
 use MultiTenantLaravel\Tests\TestCase;
 use MultiTenantLaravel\Tests\Models\Tenant;
+use MultiTenantLaravel\Tests\Models\Dealership;
 use MultiTenantLaravel\Tests\Models\Feature;
 use MultiTenantLaravel\Tests\Models\User;
 
@@ -96,5 +97,61 @@ class BaseTenantTest extends TestCase
 
         $this->assertEquals(4, $tenant->users()->count());
         $this->assertEquals(null, $not_part_of_tenant->tenants()->first());
+    }
+
+    public function testTentantCanUseADifferentTableName()
+    {
+        config()->set('multi-tenant.table_name', 'dealerships');
+
+        $this->artisan('migrate:refresh');
+
+        $tenant = factory(Tenant::class)->create();
+        $user = factory(User::class)->create();
+        $feature = factory(Feature::class)->create();
+
+        // Make sure that a tenant can be created
+        $this->assertNotEmpty($tenant);
+
+        // Make sure the owner relationship still works as expected
+        $this->assertNotEmpty($tenant->owner->id);
+
+        // Make sure the users relationship still works as expected
+        $tenant->users()->attach($user->id);
+        $this->assertEquals($user->id, $tenant->users->last()->id);
+        $this->assertTrue($tenant->hasUser($user));
+
+        // Make sure the features relationship still works as expected
+        $tenant->features()->attach($feature->id);
+        $this->assertEquals($feature->id, $tenant->features->last()->id);
+        $this->assertTrue($tenant->hasFeature($feature));
+    }
+
+    public function testTenantCanUseADifferentModelName()
+    {
+        config()->set('multi-tenant.table_name', 'dealerships');
+
+        config()->set('multi-tenant.tenant_class', Dealership::class);
+
+        $this->artisan('migrate:refresh');
+
+        $dealership = factory(config('multi-tenant.tenant_class'))->create();
+        $user = factory(User::class)->create();
+        $feature = factory(Feature::class)->create();
+
+        // Make sure that a dealership can be created
+        $this->assertNotEmpty($dealership);
+
+        // Make sure the owner relationship still works as expected
+        $this->assertNotEmpty($dealership->owner->id);
+
+        // Make sure the users relationship still works as expected
+        $dealership->users()->attach($user->id);
+        $this->assertEquals($user->id, $dealership->users->last()->id);
+        $this->assertTrue($dealership->hasUser($user));
+
+        // Make sure the features relationship still works as expected
+        $dealership->features()->attach($feature->id);
+        $this->assertEquals($feature->id, $dealership->features->last()->id);
+        $this->assertTrue($dealership->hasFeature($feature));
     }
 }

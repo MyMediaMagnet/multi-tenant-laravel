@@ -3,6 +3,7 @@
 use Faker\Generator as Faker;
 use MultiTenantLaravel\Tests\Models\User;
 use MultiTenantLaravel\Tests\Models\Tenant;
+use MultiTenantLaravel\Tests\Models\Dealership;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,6 +17,21 @@ use MultiTenantLaravel\Tests\Models\Tenant;
 */
 
 $factory->define(Tenant::class, function (Faker $faker) {
+
+    //Generate a random number to help avoid duplicate slugs
+    $unique = rand(100,999);
+
+    $name = $faker->word.'-'.$unique;
+    $user = factory(User::class)->create();
+
+    return [
+        'name' => $name,
+        'owner_id' => $user->id,
+        'slug' => str_slug($name),
+    ];
+});
+
+$factory->define(Dealership::class, function (Faker $faker) {
 
     //Generate a random number to help avoid duplicate slugs
     $unique = rand(100,999);

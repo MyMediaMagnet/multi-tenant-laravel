@@ -13,14 +13,16 @@ class CreateTenantUserTable extends Migration
      */
     public function up()
     {
-        Schema::create('tenant_user', function (Blueprint $table) {
+        $tenant_singular = str_singular(config('multi-tenant.table_name'));
+
+        Schema::create($tenant_singular . '_user', function (Blueprint $table) use ($tenant_singular) {
             $table->increments('id');
-            $table->integer('tenant_id')->unsigned();
+            $table->integer($tenant_singular . '_id')->unsigned();
             $table->integer('user_id')->unsigned();
             $table->timestamps();
 
-            $table->index('tenant_id', 'tenant_user_tenant_id_index');
-            $table->index('user_id', 'tenant_user_user_id_index');
+            $table->index($tenant_singular . '_id', $tenant_singular . '_user_' . $tenant_singular . '_id_index');
+            $table->index('user_id', $tenant_singular . '_user_user_id_index');
         });
     }
 
@@ -31,6 +33,6 @@ class CreateTenantUserTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tenant_user');
+        Schema::dropIfExists(str_singular(config('multi-tenant.table_name')) . '_user');
     }
 }
