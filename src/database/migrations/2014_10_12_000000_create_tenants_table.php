@@ -34,8 +34,6 @@ class CreateTenantsTable extends Migration
      */
     public function down()
     {
-        $table_name = config('multi-tenant.table_name');
-
-        Schema::dropIfExists($table_name);
+        Schema::dropIfExists(config('multi-tenant.table_name'));
     }
 }

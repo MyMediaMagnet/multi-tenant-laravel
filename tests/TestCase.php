@@ -86,5 +86,7 @@ abstract class TestCase extends OrchestraTestCase
             'database' => ':memory:',
             'prefix'   => '',
         ]);
+
+        $app['config']->set('auth.providers.users.model', 'MultiTenantLaravel\Tests\Models\User');
     }
 }

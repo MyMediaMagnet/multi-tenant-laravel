@@ -47,7 +47,12 @@ abstract class BaseTenant extends Model
      */
     public function features()
     {
-        return $this->belongsToMany(config('multi-tenant.feature_class'));
+        return $this->belongsToMany(
+            config('multi-tenant.feature_class'),
+            'feature_' . str_singular(config('multi-tenant.table_name')),
+            str_singular(config('multi-tenant.table_name')) . '_id',
+            'feature_id'
+        );
     }
 
     /**
@@ -55,7 +60,36 @@ abstract class BaseTenant extends Model
      */
     public function users()
     {
-        return $this->belongsToMany(config('multi-tenant.user_class'));
+        return $this->belongsToMany(
+            config('multi-tenant.user_class'),
+            str_singular(config('multi-tenant.table_name')) . '_user',
+            str_singular(config('multi-tenant.table_name')) . '_id',
+            'user_id'
+        );
+    }
+
+    /**
+     * Assign the given user to the teannt
+     *
+     * @param BaseUser $user
+     *
+     * @return void
+     */
+    public function assignUser(BaseUser $user)
+    {
+        return $this->users()->syncWithoutDetaching($user);
+    }
+
+    /**
+     * Test that user has access to the this tenant
+     *
+     * @param BaseUser $user
+     *
+     * @return boolean
+     */
+    public function hasUser(BaseUser $user)
+    {
+        return $this->users()->where('user_id', $user->id)->exists();
     }
 
     /**

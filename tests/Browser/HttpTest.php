@@ -22,6 +22,23 @@ class HttpTest extends TestCase
     }
 
     /**
+     * Test that guests attempting to go to the homepage are redirected to the login page
+     *
+     * @return void
+     */
+    public function testUserCanLogin()
+    {
+        $user = factory(User::class)->create(['password' => bcrypt('tester')]);
+        $tenant = factory(Tenant::class)->create(['owner_id' => $user->id]);
+
+        $this->visit('/login')
+            ->type($user->email, 'email')
+            ->type('tester', 'password')
+            ->press('Login')
+            ->seePageIs('/');
+    }
+
+    /**
      * Test that authenticated users with only 1 tenant get redirected to the tenants dashboard
      *
      * @return void
