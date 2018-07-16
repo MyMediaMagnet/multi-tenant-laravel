@@ -20,6 +20,28 @@ class CreateTenantsTable extends Migration
             $table->integer('owner_id');
             $table->string('name');
             $table->string('slug')->unique();
+
+            foreach(config('multi-tenant.additional_tenant_columns') as $key => $data) {
+                $type = $data['type'];
+                $column = $table->$type($key);
+
+                if ($data['index']) {
+                    $column->index();
+                }
+
+                if ($data['unique']) {
+                    $column->unique();
+                }
+
+                if ($data['unsigned']) {
+                    $column->unsigned();
+                }
+
+                if ($data['nullable']) {
+                    $column->nullable();
+                }
+            }
+
             $table->timestamps();
 
             $table->index('owner_id', $table_name . '_owner_id_index');

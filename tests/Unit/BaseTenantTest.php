@@ -154,4 +154,42 @@ class BaseTenantTest extends TestCase
         $this->assertEquals($feature->id, $dealership->features->last()->id);
         $this->assertTrue($dealership->hasFeature($feature));
     }
+
+    public function testAdditionalColumnsCanBeAddedToTenantTableViaConfig()
+    {
+        config()->set('multi-tenant.additional_tenant_columns', [
+            'test_column_1' => [
+                'index' => true,
+                'unsigned' => true,
+                'unique' => true,
+                'nullable' => true,
+                'type' => 'integer'
+            ],
+            'test_column_2' => [
+                'index' => false,
+                'unsigned' => false,
+                'unique' => false,
+                'nullable' => false,
+                'type' => 'string'
+            ],
+            'test_column_3' => [
+                'index' => false,
+                'unsigned' => false,
+                'unique' => false,
+                'nullable' => true,
+                'type' => 'string'
+            ]
+        ]);
+
+        $this->artisan('migrate:refresh');
+
+        $tenant = factory(Tenant::class)->create(['test_column_1' => 55, 'test_column_2' => 55]);
+
+        $this->assertEquals(55, $tenant->test_column_1);
+        $this->assertEquals('55', $tenant->test_column_2);
+
+        // We need to add non nullable columns to the create otherwise we'll get an exception
+        $this->expectException('Illuminate\Database\QueryException');
+        $tenant = factory(Tenant::class)->create();
+    }
 }

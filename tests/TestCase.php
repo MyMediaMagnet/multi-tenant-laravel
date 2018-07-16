@@ -63,6 +63,7 @@ abstract class TestCase extends OrchestraTestCase
         $app['config']->set('multi-tenant.role_class', 'MultiTenantLaravel\Tests\Models\Role');
         $app['config']->set('multi-tenant.permission_class', 'MultiTenantLaravel\Tests\Models\Permission');
         $app['config']->set('multi-tenant.feature_class', 'MultiTenantLaravel\Tests\Models\Feature');
+        $app['config']->set('multi-tenant.additional_tenant_columns', []);
         $app['config']->set('multi-tenant.features', [
             'fake_feature' => ['label' => 'Fake Feature', 'model' => 'MultiTenantLaravel\Tests\Models\FakeFeature']
         ]);

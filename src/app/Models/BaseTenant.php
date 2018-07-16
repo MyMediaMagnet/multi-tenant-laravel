@@ -31,6 +31,10 @@ abstract class BaseTenant extends Model
             'name'
         ];
 
+        foreach(config('multi-tenant.additional_tenant_columns') as $key => $column) {
+            $fillable[] = $key;
+        }
+
         $this->fillable(array_merge($this->fillable, $fillable));
     }
 

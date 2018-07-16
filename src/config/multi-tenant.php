@@ -19,6 +19,20 @@ return [
     'feature_class' => 'App\Feature',
 
     /**
+     * Add any additional columns you'd like added to the tenants table along with the type
+     */
+
+    'additional_tenant_columns' => [
+        // 'column_name' => [
+        //     'index' => false,
+        //     'unsigned' => false,
+        //     'unique' => false,
+        //     'nullable' => false,
+        //     'type' => 'string|integer|boolean|date|dateTime'
+        // ]
+    ],
+
+    /**
      * Features are various aspects of your application that should only be available to
      * tenants who have the expected permissions.
      *
