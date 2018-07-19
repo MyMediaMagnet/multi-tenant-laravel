@@ -40,7 +40,7 @@ class ArtisanTest extends TestCase
     public function testUserCanBeCreatedWithNoTenants(){
         // In order to properly test our commands, we need to mock the ask()
         // and anticipate() methods but leave the rest of the class to behave as normal
-        $this->mockCommand("\MultiTenantLaravel\App\Commands\CreateUser[ask, ask, anticipate]");
+        $this->mockCommand("\MultiTenantLaravel\App\Commands\CreateUser[ask, anticipate]");
 
         $this->asks('Name', 'John Doe');
         $this->asks('E-Mail', 'johndoe@email.com');
