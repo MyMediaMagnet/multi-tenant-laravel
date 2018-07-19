@@ -101,5 +101,35 @@ class CreateUser extends Command
     private function createNewUser()
     {
         $this->comment('creating new user');
+        $name = (string) $this->ask('Name');
+        $email = (string) $this->ask('E-Mail');
+
+        $user = config('multi-tenant.user_class')::create([
+            'name' => $name,
+            'email' => $email,
+            'password' => bcrypt('tester'),
+        ]);
+
+        $add_to_tenant = $this->anticipate('Would you like to assign the user to a tenant?', ['Yes', 'No'], 'Yes');
+
+        if ($add_to_tenant == 'Yes') {
+            $headers = ['Name', 'ID'];
+            $tenants = config('multi-tenant.tenant_class')::all('name', 'id');
+
+            if($tenants->count() <= 0) {
+                $this->comment($user->email . ' with the password `tester` was created without any tenants');
+            } else {
+                $this->table($headers, $tenants->toArray());
+
+                $tenant_id = (int) $this->ask('Please enter the id of the desired tenant.');
+
+                $tenant = config('multi-tenant.tenant_class')::findOrFail($tenant_id);
+
+                $tenant->update(['owner_id' => $user->id]);
+
+                $this->comment('The user ' . $user->email . ' is now the owner of ' . $tenant->name . ' with the password `tester`');
+            }
+        }
+
     }
 }
