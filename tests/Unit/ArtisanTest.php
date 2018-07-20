@@ -40,13 +40,17 @@ class ArtisanTest extends TestCase
     public function testUserCanBeCreatedWithNoTenants(){
         // In order to properly test our commands, we need to mock the ask()
         // and anticipate() methods but leave the rest of the class to behave as normal
-        $this->mockCommand("\MultiTenantLaravel\App\Commands\CreateUser[ask, anticipate]");
 
+        $this->mockCommand("\MultiTenantLaravel\App\Commands\CreateUser[ask, anticipate]");
+        $this->asks('How many would you like to create?', '1');
         $this->asks('Name', 'John Doe');
         $this->asks('E-Mail', 'johndoe@email.com');
-        $this->anticipates('Would you like to assign the user to a tenant?', ['Yes', 'No'], 'No', 'No');
 
-        $this->fireCommand('tenant:create-user', ['--fake' => false]);
+        $this->anticipates('Would you like to assign the user to a tenant?', ['Yes', 'No'], 'Yes', 'No');
+
+
+        $this->fireCommand('tenant:create-user');
+
 
         $this->assertContains(User::first()->email . ' with the password `tester` was created without any tenants', trim(Artisan::output()));
 

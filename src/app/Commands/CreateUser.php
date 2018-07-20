@@ -45,7 +45,10 @@ class CreateUser extends Command
         $count = (int) $this->ask('How many would you like to create?');
 
         while ($count > 0) {
+
+
             if (!$this->option('fake')) {
+
                 $this->createNewUser();
             } else {
                 $this->createFakeUser();
@@ -100,15 +103,16 @@ class CreateUser extends Command
      */
     private function createNewUser()
     {
-        $this->comment('creating new user');
+
+
         $name = (string) $this->ask('Name');
         $email = (string) $this->ask('E-Mail');
-
         $user = config('multi-tenant.user_class')::create([
             'name' => $name,
             'email' => $email,
             'password' => bcrypt('tester'),
         ]);
+
 
         $add_to_tenant = $this->anticipate('Would you like to assign the user to a tenant?', ['Yes', 'No'], 'Yes');
 
@@ -129,6 +133,9 @@ class CreateUser extends Command
 
                 $this->comment('The user ' . $user->email . ' is now the owner of ' . $tenant->name . ' with the password `tester`');
             }
+        }
+        else{
+            $this->comment($user->email . ' with the password `tester` was created without any tenants');
         }
 
     }
