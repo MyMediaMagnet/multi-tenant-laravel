@@ -48,9 +48,7 @@ class ArtisanTest extends TestCase
 
         $this->anticipates('Would you like to assign the user to a tenant?', ['Yes', 'No'], 'Yes', 'No');
 
-
         $this->fireCommand('tenant:create-user');
-
 
         $this->assertContains(User::first()->email . ' with the password `tester` was created without any tenants', trim(Artisan::output()));
 

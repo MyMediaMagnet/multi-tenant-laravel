@@ -104,7 +104,6 @@ class CreateUser extends Command
     private function createNewUser()
     {
 
-
         $name = (string) $this->ask('Name');
         $email = (string) $this->ask('E-Mail');
         $user = config('multi-tenant.user_class')::create([
@@ -112,7 +111,6 @@ class CreateUser extends Command
             'email' => $email,
             'password' => bcrypt('tester'),
         ]);
-
 
         $add_to_tenant = $this->anticipate('Would you like to assign the user to a tenant?', ['Yes', 'No'], 'Yes');
 
