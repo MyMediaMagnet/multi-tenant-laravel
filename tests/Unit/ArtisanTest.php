@@ -92,6 +92,8 @@ class ArtisanTest extends TestCase
 
         $this->asks('How many would you like to create?', '1');
         $this->anticipates('Would you like to create a new user, or use an existing?', ['New', 'Existing'], 'New', 'New');
+        $this->asks('Name', 'FakeUser');
+        $this->asks('E-Mail', 'Fake@user.com');
 
         $this->fireCommand('tenant:create-tenant', ['--fake' => true]);
 
