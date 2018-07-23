@@ -153,6 +153,33 @@ class ArtisanTest extends TestCase
         $this->assertNotEmpty(Tenant::first());
     }
 
+    /**
+     * Test that a new tenant can be created and owned by a new user
+     *
+     * @return void
+     */
+    public function testNewTenantCanBeCreatedWithNewUser()
+    {
+
+
+        // In order to properly test our commands, we need to mock the ask()
+        // and anticipate() methods but leave the rest of the class to behave as normal
+        $this->mockCommand("\MultiTenantLaravel\App\Commands\CreateTenant[ask, anticipate]");
+
+        $this->asks('How many would you like to create?', '1');
+        $this->asks('Please enter a name for your new tenant.', (string) 'Fake_Tenant');
+        $this->anticipates('Would you like to create a new user, or use an existing?', ['New', 'Existing'], 'New', 'New');
+        $this->asks('Please enter a name for the new user', 'new_user');
+        $this->asks('Please enter an e-mail for the new user', 'user@email.com');
+
+        $this->fireCommand('tenant:create-tenant');
+
+        $this->assertContains('The user ' . User::first()->email . ' is now the owner of ' . Tenant::first()->name . ' with the password', trim(Artisan::output()));
+
+        $this->assertNotEmpty(User::first());
+        $this->assertNotEmpty(Tenant::first());
+    }
+
 
     /**
      * Test Role Permissions and Features properly sync
