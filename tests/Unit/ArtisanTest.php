@@ -37,6 +37,25 @@ class ArtisanTest extends TestCase
         $this->assertNotEmpty(User::first());
     }
 
+    public function testUserCanBeCreatedWithNoTenants(){
+        // In order to properly test our commands, we need to mock the ask()
+        // and anticipate() methods but leave the rest of the class to behave as normal
+
+        $this->mockCommand("\MultiTenantLaravel\App\Commands\CreateUser[ask, anticipate]");
+        $this->asks('How many would you like to create?', '1');
+        $this->asks('Name', 'John Doe');
+        $this->asks('E-Mail', 'johndoe@email.com');
+
+        $this->anticipates('Would you like to assign the user to a tenant?', ['Yes', 'No'], 'Yes', 'No');
+
+        $this->fireCommand('tenant:create-user');
+
+        $this->assertContains(User::first()->email . ' with the password `tester` was created without any tenants', trim(Artisan::output()));
+
+        $this->assertNotEmpty(User::first());
+
+    }
+
     /**
      * Test that a fake user can be created and then assigned to a new fake tenant
      *
@@ -73,6 +92,8 @@ class ArtisanTest extends TestCase
 
         $this->asks('How many would you like to create?', '1');
         $this->anticipates('Would you like to create a new user, or use an existing?', ['New', 'Existing'], 'New', 'New');
+        $this->asks('Name', 'FakeUser');
+        $this->asks('E-Mail', 'Fake@user.com');
 
         $this->fireCommand('tenant:create-tenant', ['--fake' => true]);
 
@@ -105,6 +126,33 @@ class ArtisanTest extends TestCase
         $this->assertNotEmpty(User::first());
         $this->assertNotEmpty(Tenant::first());
     }
+
+    /**
+     * Test that a new tenant can be created owned by an existing user
+     *
+     * @return void
+     */
+    public function testNewTenantCanBeCreatedWithExistingUser()
+    {
+        $user = factory(User::class)->create();
+
+        // In order to properly test our commands, we need to mock the ask()
+        // and anticipate() methods but leave the rest of the class to behave as normal
+        $this->mockCommand("\MultiTenantLaravel\App\Commands\CreateTenant[ask, anticipate]");
+
+        $this->asks('How many would you like to create?', '1');
+        $this->asks('Please enter a name for your new tenant.', (string) 'Fake_Tenant');
+        $this->asks('Please enter the id of the desired user.', (string) $user->id);
+        $this->anticipates('Would you like to create a new user, or use an existing?', ['New', 'Existing'], 'New', 'Existing');
+
+        $this->fireCommand('tenant:create-tenant');
+
+        $this->assertContains('The user ' . User::first()->email . ' is now the owner of ' . Tenant::first()->name . ' with the password', trim(Artisan::output()));
+
+        $this->assertNotEmpty(User::first());
+        $this->assertNotEmpty(Tenant::first());
+    }
+
 
     /**
      * Test Role Permissions and Features properly sync

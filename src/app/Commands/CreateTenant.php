@@ -45,7 +45,7 @@ class CreateTenant extends Command
         $count = (int) $this->ask('How many would you like to create?');
 
         while ($count > 0) {
-            if (!$this->option('fake')) {
+            if(!$this->option('fake')) {
                 $this->createNewTenant();
             } else {
                 $this->createFakeTenant();
@@ -68,7 +68,13 @@ class CreateTenant extends Command
         $create_new = $this->anticipate('Would you like to create a new user, or use an existing?', ['New', 'Existing'], 'New');
 
         if ($create_new === "New") {
-            $user = factory(config('multi-tenant.user_class'))->create(['password' => bcrypt('tester')]);
+            $name = (string) $this->ask('Name');
+            $email = (string) $this->ask('E-Mail');
+            $user = config('multi-tenant.user_class')::create([
+                'name' => $name,
+                'email' => $email,
+                'password' => bcrypt('tester'),
+            ]);
         } else {
             $headers = ['Name', 'ID'];
             $tenants = config('multi-tenant.user_class')::all('name', 'id');
@@ -95,6 +101,36 @@ class CreateTenant extends Command
      */
     private function createNewTenant()
     {
-        // Ask for some user input and create a new tenant
+
+        $tenant_name = (string) $this->ask('Please enter a name for your new tenant.');
+
+        $create_new = $this->anticipate('Would you like to create a new user, or use an existing?', ['New', 'Existing'], 'New');
+
+        if ($create_new === "New") {
+            $user_name = (string) $this->ask('Please enter a name for the new user');
+            $user_email = (string) $this->ask('Please enter an e-mail for the new user');
+            $user = config('multi-tenant.user_class')::create([
+                'name' => $user_name,
+                'email' => $user_email,
+                'password' => bcrypt('tester'),
+            ]);
+        } else {
+            $headers = ['Name', 'ID'];
+            $tenants = config('multi-tenant.user_class')::all('name', 'id');
+            $this->table($headers, $tenants->toArray());
+
+            $user_id = (int) $this->ask('Please enter the id of the desired user.');
+
+            $user = config('multi-tenant.user_class')::findOrFail($user_id);
+        }
+
+        $tenant = config('multi-tenant.tenant_class')::create([
+            'name' => $tenant_name,
+            'owner_id' => $user->id,
+            'slug' => str_slug($tenant_name)
+        ]);
+
+        $this->comment('The user ' . $user->email . ' is now the owner of ' . $tenant->name . ' with the password `tester`');
     }
+
 }
